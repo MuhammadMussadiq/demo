@@ -17,6 +17,10 @@ mvn clean install
 ```shell
 docker-compose up
 ```
+3- To run the tests
+```shell
+mvn test
+```
 
 ## Application Structure
 On start-up, DummyDataCreator class is responsible to save dummy data e.g Products, Customers, Bills etc
