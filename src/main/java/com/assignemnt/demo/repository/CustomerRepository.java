@@ -1,7 +1,7 @@
 package com.assignemnt.demo.repository;
 
-import com.assignemnt.demo.document.Customer;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.assignemnt.demo.model.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CustomerRepository extends MongoRepository<Customer, String> {
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 }

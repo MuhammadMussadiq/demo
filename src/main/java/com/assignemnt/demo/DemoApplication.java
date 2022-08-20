@@ -2,17 +2,14 @@ package com.assignemnt.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.config.EnableMongoAuditing;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableMongoRepositories(value = "com.assignemnt.demo.repository")
-@EnableMongoAuditing
+@EnableJpaRepositories(basePackages = "com.assignemnt.demo")
 public class DemoApplication {
 
-	public static void main(String[] args) {
-		System.out.println("Test");
-		SpringApplication.run(DemoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
 
 }

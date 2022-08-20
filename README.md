@@ -1,6 +1,7 @@
 # Demo App
 
 Technology assessment assignment
+
 ## Requirements
 
 For building and running the application you need:
@@ -8,56 +9,119 @@ For building and running the application you need:
 - [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Maven 3](https://maven.apache.org)
 
-## Running the application 
+## Running the application
+
 1- To build the jar
+
 ```shell
-mvn clean install
-```
-2- To run the mongo-db and api services
-```shell
-docker-compose up
-```
-3- To run the tests
-```shell
-mvn test
+mvn spring-boot:run
 ```
 
 ## Application Structure
-On start-up, DummyDataCreator class is responsible to save dummy data e.g Products, Customers, Bills etc
-* Endpoint to apply discount on given bill id
+
+On start-up, DummyDataCreator class is responsible to save dummy data e.g Products, Customers
+
+* Endpoint to get product with filters and pagination
+
 ```shell
 Method: GET
-URI: http://localhost:8080/applyDiscount/{billId}
-Available Billing IDs: [62e64f01807ac164c11ae990, 62e64f01807ac164c11ae991, 62e64f01807ac164c11ae992, 62e64f01807ac164c11ae995]
+URI: http://localhost:8080/product/all
+Request Params: [name, brand, color, page]
 Response Format: {
-    "totalAmount": 0.0,
-    "payableAmount": 0.0
+    "content" : [], // List of products
+    "totalPages": 3,
+    "totalElements": 30
 }
 ```
-* Endpoint to all bills available
+
+* Endpoint to save/update cart
+
 ```shell
-Method: GET
-URI: http://localhost:8080/bills
-Response Format: [
+Method: POST
+URI: http://localhost:8080/cart/add 
+     OR
+     http://localhost:8080/cart/update
+
+Request Fromat: 
 {
-        "objectId": "62e64f01807ac164c11ae991",
-        "customer": {
-            "objectId": "62e64f01807ac164c11ae851",
-            "name": "Ibraheem",
-            "hasAffiliation": true,
-            "registrationDate": "2022-07-31",
-            "storeEmployee": false
-        },
-        "products": [
-            {
-                "objectId": "62e64f01807ac164c11ae857",
-                "name": "Laptop",
-                "price": 1000.0,
-                "groceryItem": false
-            }
-        ]
-    }
-]
+    "customerId": 2, 
+    "productId":22,
+    "quantity":1
+}
+
+Response Format: 
+{
+    "id": 34,
+    "customer": {
+        "id": 2,
+        "name": "Qasim"
+    },
+    "cartItems": [
+        {
+            "id": 35,
+            "product": {
+                "id": 11,
+                "name": "Microsoft Surface Laptop 4",
+                "type": null,
+                "color": "Black",
+                "brand": "Microsoft Surface",
+                "price": 1499.0
+            },
+            "quantity": 1
+        }
+    ],
+    "totalCost": 1499.0
+}
 ```
-## High level UML class diagram
-![img.png](Class_Diagram.png)
+
+
+* Endpoint to delete cart item
+
+```shell
+Method: DELETE
+URI: http://cart/remove?itemId=36
+ 
+```
+
+* Endpoint to place an order
+```shell
+Method: POST
+URI: http://localhost:8080/order/save/{customerId}
+
+Response Format: 
+{
+    "id": 37,
+    "customer": {
+        "id": 2,
+        "name": "Qasim"
+    },
+    "orderDetail": [
+        {
+            "id": 38,
+            "product": {
+                "id": 11,
+                "name": "Microsoft Surface Laptop 4",
+                "type": null,
+                "color": "Black",
+                "brand": "Microsoft Surface",
+                "price": 1499.0
+            },
+            "quantity": 1
+        },
+        {
+            "id": 39,
+            "product": {
+                "id": 22,
+                "name": "Skin Beauty Serum.",
+                "type": null,
+                "color": "white",
+                "brand": "ROREC White Rice",
+                "price": 46.0
+            },
+            "quantity": 1
+        }
+    ],
+    "totalCost": 1545.0,
+    "status": "READY_TO_DELIVER"
+}
+```
